@@ -4,6 +4,7 @@ Windows app uses WinAPI and :
 1. takes info about RAM load with sysinfoapi.h and calculates CPU load
 2. sends it via COM-port to MCU
 3. shows in CLI/tray
+
 Arduino/AVR MCU:
 1. takes info from COM-port
 2. puts it on 16x2 LCD
