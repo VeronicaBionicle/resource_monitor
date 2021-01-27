@@ -12,8 +12,9 @@ Arduino/AVR MCU:
 * RAM and CPU load info is as accurate as Windows Task Manager
 * Windows app has CLI (uses less RAM) and TRAY (looks C00Ler) versions  
 > TRAY version puts the icon to taskbar and hides CLI
->> Hover over icon to watch current CPU and RAM load
->> Double click / Right mouse button calls message box, which offers to quit app.  
+>> - Hover over icon to watch current CPU and RAM load
+>> - Double click / Right mouse button calls message box, which offers to quit app.  
+>
 > CLI version shows all info itself
 * App try to reconnect on initialization, if MCU wasn`t found
 * MCU checks connection every 10s and writes messages and try to reconnect, if it can`t find PC
