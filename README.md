@@ -1,5 +1,6 @@
 # Resource monitor v.0.1
 This repo contains Windows app and Arduino/AVR firmware for my "hardware" resource monitor.
+
 Windows app uses WinAPI and : 
 1. takes info about RAM load with sysinfoapi.h and calculates CPU load
 2. sends it via COM-port to MCU
