@@ -1,0 +1,2 @@
+D:\CPlusPlus\resource_monitor\x64\Debug\resource_monitor.exe
+D:\CPlusPlus\resource_monitor\x64\Debug\resource_monitor.pdb
