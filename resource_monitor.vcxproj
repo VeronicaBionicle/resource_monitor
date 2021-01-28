@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Image Include="chip.ico" />
+    <Image Include="error.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="resource_monitor_main_tray.cpp" />

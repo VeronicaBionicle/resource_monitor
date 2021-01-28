@@ -18,6 +18,9 @@
     <Image Include="chip.ico">
       <Filter>Исходные файлы</Filter>
     </Image>
+    <Image Include="error.ico">
+      <Filter>Исходные файлы</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="resource_monitor_main_tray.cpp">

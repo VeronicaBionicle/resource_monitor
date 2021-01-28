@@ -43,8 +43,8 @@ void setup() {
   
   displayNoConnection();
   
-  Serial.begin(9600);
-  while (Serial.available() == 0) ;
+  Serial.begin(115200);
+  while (Serial.available() == 0) {};
   
   regenerateDisplay();
 }
@@ -71,10 +71,10 @@ void loop() {
     }
     
   if (ticks >= REGEN_SECONDS && serial_not_connected) {
-    displayNoConnection();
+    displayNoConnection(); 
     while (Serial.available() == 0) {} ;
-    ticks = 0;
     serial_not_connected = 0;
+    ticks = 0;
     regenerateDisplay();
     };
   /* write to com program
