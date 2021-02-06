@@ -10,6 +10,11 @@ Arduino/AVR MCU:
 1. takes info from COM-port
 2. puts it on 16x2 LCD
 
+### NEW in v.0.1.2 (06.02.2021)
+* Added COM port scanning and choice
+* Added reconnect dialog box
+* Now reconnect works much better
+
 ### NEW in v.0.1.1 (28.01.2021)
 * Added try to reconnect (works only on first plug...)
 * Icon tip shows load without connections
@@ -22,7 +27,7 @@ Arduino/AVR MCU:
 * Windows app has CLI (uses less RAM) and TRAY (looks C00Ler) versions  
 > TRAY version puts the icon to taskbar and hides CLI
 >> - Hover over icon to watch current CPU and RAM load
->> - Double click / Right mouse button calls message box, which offers to quit app.  
+>> - Double click / Right mouse button calls message box, which offers to quit app, or reconnect device.  
 >
 > CLI version shows all info itself
 * App try to reconnect on initialization, if MCU wasn`t found
