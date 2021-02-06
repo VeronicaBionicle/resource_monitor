@@ -1,4 +1,4 @@
-# Resource monitor v.0.1.1
+# Resource monitor v.0.1.2
 This repo contains Windows app and Arduino/AVR firmware for my "hardware" resource monitor.
 
 Windows app uses WinAPI and : 
