@@ -1,5 +1,6 @@
 ﻿#include <Windows.h>
 #include <stdio.h>
+#include <tchar.h>
 
 typedef unsigned long long ULL;
 
@@ -20,10 +21,12 @@ MEMORYSTATUSEX memoryStatusEx;
 
 HANDLE portHandle;
 COMSTAT portState;
-LPCTSTR portName = L"\\\\.\\COM11";
 DWORD portErrors;
 COMMTIMEOUTS portTimeouts;
 DCB dcb;
+BOOL connectionOk = false;
+int portNum = -1;
+TCHAR portName[32];
 
 /* Creates port file and inits it */
 bool OpenPort (LPCTSTR portName) {
@@ -126,13 +129,118 @@ double GetRAMLoad() {
 	return 100.0 * (1.0 - (double)memoryStatusEx.ullAvailPhys / memoryStatusEx.ullTotalPhys);
 }
 
+int ShowCOMPorts() {
+	ShowWindow(GetConsoleWindow(), SW_SHOW);	//for debugging
+	int r = 0;
+	HKEY hkey = NULL;
+	//Open Registry Key
+	r = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"HARDWARE\\DEVICEMAP\\SERIALCOMM\\", 0, KEY_READ, &hkey);
+	if (r != ERROR_SUCCESS) return -1;
+
+	unsigned long CountValues = 0, MaxValueNameLen = 0, MaxValueLen = 0;
+	//Получаем информацию об открытом разделе реестра
+	RegQueryInfoKey(hkey, NULL, NULL, NULL, NULL, NULL, NULL, &CountValues, &MaxValueNameLen, &MaxValueLen, NULL, NULL);
+	++MaxValueNameLen;
+
+	printf("Found %lu COM-ports:\n", CountValues);
+
+	//Выделяем память
+	CHAR* bufferName = NULL, * bufferData = NULL;
+	bufferName = (CHAR*)malloc(MaxValueNameLen * sizeof(TCHAR));
+
+	if (!bufferName) {
+		RegCloseKey(hkey);
+		return -1;
+	}
+
+	bufferData = (CHAR*)malloc((MaxValueLen + 1) * sizeof(TCHAR));
+	if (!bufferData) {
+		free(bufferName);
+		RegCloseKey(hkey);
+		return -1;
+	}
+
+	unsigned long NameLen, type, DataLen;
+	//Цикл перебора параметров раздела реестра
+	for (unsigned int i = 0; i < CountValues; i++)
+	{
+		NameLen = MaxValueNameLen;
+		DataLen = MaxValueLen;
+		r = RegEnumValue(hkey, i, (LPWSTR)bufferName, &NameLen, NULL, &type, (LPBYTE)bufferData, &DataLen);
+		if ((r != ERROR_SUCCESS) || (type != REG_SZ))
+			continue;
+
+		_tprintf(TEXT("%d) %s\n"), i+1, bufferData);
+	}
+
+	printf("Enter port (0 to rescan): ");
+
+	unsigned int choosenCOM;
+	scanf_s("%u", &choosenCOM);
+	
+	if (choosenCOM <= 0 || choosenCOM > CountValues) {
+		if (choosenCOM != 0) printf("Wrong port number\n");
+		return -1;
+	}
+
+	NameLen = MaxValueNameLen;
+	DataLen = MaxValueLen;
+	r = RegEnumValue(hkey, choosenCOM-1, (LPWSTR)bufferName, &NameLen, NULL, &type, (LPBYTE)bufferData, &DataLen);
+
+	if (r != ERROR_SUCCESS) {
+		printf("Wrong port number\n");
+		return -1;
+	}
+
+	int portNumber = 0;
+
+	for (size_t i = 6; i < DataLen - 1; i++) {
+		if (bufferData[i] >= '0' && bufferData[i] <= '9') { portNumber = portNumber * 10 + (bufferData[i] - '0'); };
+	}
+
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
+	//Освобождаем память
+	free(bufferName);
+	free(bufferData);
+	//Закрываем раздел реестра
+	RegCloseKey(hkey);
+
+	return portNumber;	//возвраащаем выбранный номер порта
+}
+
+void ReopenPort() {
+	portNum = -1;
+	while (portNum == -1) {
+		system("cls");
+		portNum = ShowCOMPorts();
+	}
+	_stprintf_s(portName, sizeof(portName) / sizeof(TCHAR), _T("\\\\.\\COM%d"), portNum);
+	connectionOk = OpenPort(portName);	// open port
+	ShowWindow(GetConsoleWindow(), SW_HIDE);	//hide window
+}
+
 // callback for tray icon interaction
 LRESULT CALLBACK WndProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) { // Message from tray icon
 	case WM_USER:
 		if (lParam == WM_RBUTTONDOWN || lParam == WM_LBUTTONDBLCLK) {
-			if (MessageBox(NULL, TEXT("Завершить работу?"), TEXT("Resource monitor"), MB_ICONQUESTION | MB_YESNO) == IDYES)
-				DestroyWindow(window);
+			if (connectionOk) {
+				int answer = MessageBox(NULL, TEXT("Завершить работу?"), TEXT("Resource monitor"), MB_ICONQUESTION | MB_YESNO);
+				if (answer == IDYES) { DestroyWindow(window); } else break;
+			} else {
+					int answer = MessageBox(NULL, TEXT("Ошибка соединения. Переподключиться?"), TEXT("Resource monitor"), MB_ICONERROR | MB_ABORTRETRYIGNORE);
+					switch (answer) {
+					case IDABORT: PostQuitMessage(0); break;	//close
+					case IDRETRY:
+						CloseHandle(portHandle); // close port
+						ReopenPort();
+						break;
+					case IDIGNORE: ShowWindow(GetConsoleWindow(), SW_HIDE); break;
+					default: break;
+				}
+
+				}
 		}
 		break;
 	case WM_DESTROY:
@@ -150,13 +258,12 @@ VOID CALLBACK TimerFunc(HWND, UINT, UINT idTimer, DWORD dwTime) {
 	double CPULoad = GetCPULoad();
 	double RAMLoad = GetRAMLoad();
 
-	bool writeOk = WriteCOM(CPU_LOAD_CHAR, CPULoad);
-	writeOk &= WriteCOM(RAM_LOAD_CHAR, RAMLoad);
+	//bool writeOk 
+	connectionOk = WriteCOM(CPU_LOAD_CHAR, CPULoad);
+	connectionOk &= WriteCOM(RAM_LOAD_CHAR, RAMLoad);
 
-	if (!writeOk) {
+	if (!connectionOk) {
 		trayIcon.hIcon = errorIcon; // set error icon
-		OpenPort(portName); //try to reconnect
-		//ShowWindow(GetConsoleWindow(), SW_SHOW);	//for debugging
 	} else {
 		trayIcon.hIcon = defaultIcon; //set normal icon
 	}
@@ -166,6 +273,19 @@ VOID CALLBACK TimerFunc(HWND, UINT, UINT idTimer, DWORD dwTime) {
 	wsprintf(tipText, L"CPU: %ld%% RAM: %ld%%", (long)CPULoad, (long)RAMLoad);
 	if (lstrcpyn(trayIcon.szTip, tipText, 22))
 		Shell_NotifyIcon(NIM_MODIFY, &trayIcon);
+}
+
+void InitIcon(HWND window) {
+	// init tray icon
+	trayIcon.cbSize = sizeof(trayIcon);
+	trayIcon.hWnd = window;
+	trayIcon.uVersion = NOTIFYICON_VERSION;
+	trayIcon.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_SHOWTIP;
+	trayIcon.uCallbackMessage = WM_USER;
+	// load the icon
+	trayIcon.hIcon = defaultIcon;
+	// add icon to tray
+	Shell_NotifyIcon(NIM_ADD, &trayIcon);
 }
 
 int main(HINSTANCE instance, HINSTANCE, LPTSTR, int) {
@@ -179,24 +299,13 @@ int main(HINSTANCE instance, HINSTANCE, LPTSTR, int) {
 	RegisterClassEx(&main);
 	// create main window
 	HWND window = CreateWindowEx(0, TEXT("Main"), NULL, 0, 0, 0, 0, 0, NULL, NULL, instance, NULL);
+	
+	InitIcon(window);
 
-	// init tray icon
-	trayIcon.cbSize = sizeof(trayIcon);
-	trayIcon.hWnd = window;
-	trayIcon.uVersion = NOTIFYICON_VERSION;
-	trayIcon.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_SHOWTIP;
-	trayIcon.uCallbackMessage = WM_USER;
-	// load the icon
-	trayIcon.hIcon = defaultIcon;
-	// add icon to tray
-	Shell_NotifyIcon(NIM_ADD, &trayIcon);
+	memoryStatusEx.dwLength = sizeof(memoryStatusEx);	//init memory info 
 
-	memoryStatusEx.dwLength = sizeof(memoryStatusEx);	//init memry info 
-
-	OpenPort(portName);	// open port
-
-	ShowWindow(GetConsoleWindow(), SW_HIDE);	//hide window
- 
+	//ReopenPort();
+	
 	UINT timer = SetTimer(NULL, 0, TIMER_PERIOD, (TIMERPROC)TimerFunc);	//start timer
 	
 	// message loop
