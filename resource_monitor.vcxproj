@@ -143,7 +143,15 @@
     <Image Include="error.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="COM_port.cpp" />
+    <ClCompile Include="load_check.cpp" />
     <ClCompile Include="resource_monitor_main_tray.cpp" />
+    <ClCompile Include="tray_icon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="COM_port.h" />
+    <ClInclude Include="load_check.h" />
+    <ClInclude Include="tray_icon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

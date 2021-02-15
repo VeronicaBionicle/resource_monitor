@@ -1,0 +1,9 @@
+﻿  resource_monitor_main_tray.cpp
+D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(139,12): warning C4477: "wprintf": в строке форматирования "%s" требуется аргумент типа "wchar_t *", но вариативный аргумент "2" имеет тип "CHAR *"
+D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(139,12): message : рекомендуется использовать "%hs" в строке форматирования
+D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(139,12): message : рекомендуется использовать "%Ts" в строке форматирования
+D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(139,12): message : это предупреждение основано на нестандартной семантике, используемой Visual C++
+D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(229,26): warning C4805: &=: небезопасное смешение типа "BOOL" и типа "bool" в операции
+  tray_icon.cpp
+  Создание кода...
+  resource_monitor.vcxproj -> D:\CPlusPlus\resource_monitor\Debug\resource_monitor.exe

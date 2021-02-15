@@ -1,8 +1,8 @@
-﻿  resource_monitor_main_tray.cpp
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(173,12): warning C4477: "wprintf": в строке форматирования "%s" требуется аргумент типа "wchar_t *", но вариативный аргумент "2" имеет тип "CHAR *"
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(173,12): message : рекомендуется использовать "%hs" в строке форматирования
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(173,12): message : рекомендуется использовать "%Ts" в строке форматирования
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(173,12): message : это предупреждение основано на нестандартной семантике, используемой Visual C++
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(263,26): warning C4805: &=: небезопасное смешение типа "BOOL" и типа "bool" в операции
-D:\CPlusPlus\resource_monitor\resource_monitor_main_tray.cpp(309,13): warning C4244: инициализация: преобразование "UINT_PTR" в "UINT", возможна потеря данных
+﻿  COM_port.cpp
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): warning C4477: "wprintf": в строке форматирования "%s" требуется аргумент типа "wchar_t *", но вариативный аргумент "2" имеет тип "CHAR *"
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : рекомендуется использовать "%hs" в строке форматирования
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : рекомендуется использовать "%Ts" в строке форматирования
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : это предупреждение основано на нестандартной семантике, используемой Visual C++
+  resource_monitor_main_tray.cpp
+  Создание кода...
   resource_monitor.vcxproj -> D:\CPlusPlus\resource_monitor\x64\Debug\resource_monitor.exe
