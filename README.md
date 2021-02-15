@@ -1,4 +1,4 @@
-# Resource monitor v.0.1.2
+# Resource monitor v.0.1.3
 This repo contains Windows app and Arduino/AVR firmware for my "hardware" resource monitor.
 
 Windows app uses WinAPI and : 
@@ -9,6 +9,10 @@ Windows app uses WinAPI and :
 Arduino/AVR MCU:
 1. takes info from COM-port
 2. puts it on 16x2 LCD
+
+### NEW in v.0.1.3 (15.02.2021)
+* Made .h and .cpp files for functions
+* Cleared some names
 
 ### NEW in v.0.1.2 (06.02.2021)
 * Added COM port scanning and choice
@@ -34,9 +38,7 @@ Arduino/AVR MCU:
 * MCU checks connection every 10s and writes messages and try to reconnect, if it can`t find PC
 
 ### TO DO in v.0.2
-* Ask COM-port number
-* Check connection with MCU/PC with Timer
-* Make .h and .cpp files for functions
+* Check connection with PC with Timer
 * Test, test, test!
 * Start making MCU firmware on C/C++, not Wiring
 
