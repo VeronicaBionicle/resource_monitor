@@ -1,8 +1,9 @@
 #include "tray_icon.h"
+#include "resource.h"
 
 NOTIFYICONDATA trayIcon = {};
-HICON defaultIcon = (HICON)LoadImage(NULL, TEXT("chip.ico"), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
-HICON errorIcon = (HICON)LoadImage(NULL, TEXT("error.ico"), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+HICON defaultIcon = (HICON)LoadIcon((HINSTANCE)GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_DEFAULT_ICON));
+HICON errorIcon = (HICON)LoadIcon((HINSTANCE)GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ERROR_ICON));
 
 void InitIcon(HWND window) {
 	// init tray icon

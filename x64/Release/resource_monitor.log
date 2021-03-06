@@ -1,0 +1,13 @@
+﻿  COM_port.cpp
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): warning C4477: "wprintf": в строке форматирования "%s" требуется аргумент типа "wchar_t *", но вариативный аргумент "2" имеет тип "CHAR *"
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : рекомендуется использовать "%hs" в строке форматирования
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : рекомендуется использовать "%Ts" в строке форматирования
+D:\CPlusPlus\resource_monitor\COM_port.cpp(50,12): message : это предупреждение основано на нестандартной семантике, используемой Visual C++
+  resource_monitor_main_tray.cpp
+  tray_icon.cpp
+  Создание кода
+  0 of 30 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  resource_monitor.vcxproj -> D:\CPlusPlus\resource_monitor\x64\Release\resource_monitor.exe

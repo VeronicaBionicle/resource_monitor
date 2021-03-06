@@ -1,2 +1,0 @@
-D:\CPlusPlus\resource_monitor\Debug\resource_monitor.exe
-D:\CPlusPlus\resource_monitor\Debug\resource_monitor.pdb

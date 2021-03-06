@@ -139,8 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Image Include="chip.ico" />
     <Image Include="error.ico" />
+    <Image Include="main_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="COM_port.cpp" />
@@ -151,7 +151,11 @@
   <ItemGroup>
     <ClInclude Include="COM_port.h" />
     <ClInclude Include="load_check.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="tray_icon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icons.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
