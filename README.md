@@ -10,6 +10,9 @@ Arduino/AVR MCU:
 1. takes info from COM-port
 2. puts it on 16x
 
+---
+![How it works](https://github.com/VeronicaBionicle/resource_monitor/blob/main/how_it_work.gif)
+
 ### NEW in v.0.1.4 (06.03.2021)
 * New icons drawn by me
 * Icons are added to resources (icons.rc)
