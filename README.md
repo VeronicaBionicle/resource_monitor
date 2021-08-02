@@ -8,7 +8,7 @@ Windows app uses WinAPI and :
 
 Arduino/AVR MCU:
 1. takes info from COM-port
-2. puts it on 16x
+2. puts it on 16x2 LCD display.
 
 ---
 ![How it works](https://github.com/VeronicaBionicle/resource_monitor/blob/main/how_it_work.gif)
